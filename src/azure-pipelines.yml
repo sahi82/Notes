@@ -1,0 +1,26 @@
+// File: azure-pipelines.yml
+trigger:
+- main
+
+pool:
+  vmImage: 'ubuntu-latest'
+
+steps:
+- task: NodeTool@0
+  inputs:
+    versionSpec: '22.x'
+  displayName: 'Install Node.js'
+
+- script: |
+    npm install
+    npm run build
+  displayName: 'npm install and build'
+
+- task: AzureWebApp@1
+  inputs:
+    azureSubscription: 'NotesService'
+    appType: 'webAppLinux'
+    appName: 'Notes'
+    package: '$(System.DefaultWorkingDirectory)/server'
+    runtimeStack: 'NODE|22-lts'
+  displayName: 'Deploy to Azure App Service'
