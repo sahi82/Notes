@@ -20,6 +20,6 @@ steps:
     azureSubscription: 'NotesService'
     appType: 'webAppLinux'
     appName: 'Notes'
-    package: '$(System.DefaultWorkingDirectory)/server'
+    package: '$(System.DefaultWorkingDirectory)/build'
     runtimeStack: 'NODE|22-lts'
   displayName: 'Deploy to Azure App Service'
