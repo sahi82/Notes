@@ -11,6 +11,7 @@ steps:
   displayName: 'Install Node.js'
 
 - script: |
+    export NODE_OPTIONS=--openssl-legacy-provider
     npm install
     npm run build
   displayName: 'npm install and build'
