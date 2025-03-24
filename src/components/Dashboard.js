@@ -2,6 +2,7 @@
 import React from 'react';
 import { getAuth, signOut } from 'firebase/auth';
 import '../styles/Dashboard.css';
+import Notes from './Notes';
 
 function Dashboard() {
   const auth = getAuth();
