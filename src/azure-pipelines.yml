@@ -5,31 +5,31 @@ pool:
   vmImage: 'ubuntu-latest'
 
 steps:
-- task: UseAzureCLI@1
-  inputs:
-    azureSubscription: 'ba920df4-0010-4e4d-aa6e-209d1b5a5ef2'
-    scriptType: 'bash'
-    scriptLocation: 'inlineScript'
-    inlineScript: |
+#- task: UseAzureCLI@1
+#  inputs:
+#    azureSubscription: 'ba920df4-0010-4e4d-aa6e-209d1b5a5ef2'
+#    scriptType: 'bash'
+#    scriptLocation: 'inlineScript'
+#    inlineScript: |
       # Variables
-      RESOURCE_GROUP="Notesebsite"
-      LOCATION="West US 2"
-      APP_SERVICE_PLAN="ASP-Notesebsite-a920"
-      FRONTEND_APP_NAME="Notes"
-      BACKEND_APP_NAME="Notes-Backend"
+      #RESOURCE_GROUP="Notesebsite"
+      #LOCATION="West US 2"
+      #APP_SERVICE_PLAN="ASP-Notesebsite-a920"
+      #FRONTEND_APP_NAME="Notes"
+      #BACKEND_APP_NAME="Notes-Backend"
 
       # Create Resource Group if it doesn't exist
-      az group create --name $RESOURCE_GROUP --location $LOCATION
+      #az group create --name $RESOURCE_GROUP --location $LOCATION
 
       # Create App Service Plan if it doesn't exist
-      az appservice plan create --name $APP_SERVICE_PLAN --resource-group $RESOURCE_GROUP --sku B1 --is-linux
+      #az appservice plan create --name $APP_SERVICE_PLAN --resource-group $RESOURCE_GROUP --sku B1 --is-linux
 
       # Create Frontend App Service if it doesn't exist
-      az webapp create --name $FRONTEND_APP_NAME --resource-group $RESOURCE_GROUP --plan $APP_SERVICE_PLAN --runtime "NODE|22-lts"
+      #az webapp create --name $FRONTEND_APP_NAME --resource-group $RESOURCE_GROUP --plan $APP_SERVICE_PLAN --runtime "NODE|22-lts"
 
       # Create Backend App Service if it doesn't exist
-      az webapp create --name $BACKEND_APP_NAME --resource-group $RESOURCE_GROUP --plan $APP_SERVICE_PLAN --runtime "NODE|22-lts"
-  displayName: 'Create Azure App Services if not exist'
+      #az webapp create --name $BACKEND_APP_NAME --resource-group $RESOURCE_GROUP --plan $APP_SERVICE_PLAN --runtime "NODE|22-lts"
+  #displayName: 'Create Azure App Services if not exist'
 
 - task: NodeTool@0
   inputs:
