@@ -42,26 +42,52 @@ steps:
     npm run build
   displayName: 'npm install and build'
 
+- task: PublishBuildArtifacts@1
+  inputs:
+    pathToPublish: '$(System.DefaultWorkingDirectory)/build'
+    artifactName: 'frontend'
+    publishLocation: 'Container'
+  displayName: 'Publish Frontend Build Artifact'
+
+- task: DownloadPipelineArtifact@2
+  inputs:
+    artifact: 'frontend'
+    path: '$(Pipeline.Workspace)/frontend'
+  displayName: 'Download Frontend Artifact'
+
 - task: AzureWebApp@1
   inputs:
     azureSubscription: 'NotesService'
     appType: 'webAppLinux'
     appName: 'Notes'
-    package: '$(System.DefaultWorkingDirectory)/build'
+    package: '$(Pipeline.Workspace)/frontend'
     runtimeStack: 'NODE|22-lts'
   displayName: 'Deploy to Azure App Service'
 
 - script: |
     export NODE_OPTIONS=--openssl-legacy-provider
+    cd src/server
     npm install
-    npm run build
   displayName: 'Install Backend Dependencies'
+
+- task: PublishBuildArtifacts@1
+  inputs:
+    pathToPublish: 'src/server'
+    artifactName: 'backend'
+    publishLocation: 'Container'
+  displayName: 'Publish Backend Artifact'
+
+- task: DownloadPipelineArtifact@2
+  inputs:
+    artifact: 'backend'
+    path: '$(Pipeline.Workspace)/backend'
+  displayName: 'Download Backend Artifact'
 
 - task: AzureWebApp@1
   inputs:
     azureSubscription: 'NotesService'
     appType: 'webAppLinux'
     appName: 'Notes-Backend'
-    package: '$(System.DefaultWorkingDirectory)/src/server'
+    package: '$(Pipeline.Workspace)/backend'
     runtimeStack: 'NODE|22-lts'
   displayName: 'Deploy Backend to Azure App Service'
