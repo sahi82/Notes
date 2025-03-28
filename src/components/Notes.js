@@ -25,12 +25,13 @@ function Notes() {
     try {
       setLoading(true);
       
+      const token = await user.getIdToken();
       // Fetch notes from the server API
       const response = await fetch(`${API_BASE_URL}/api/notes/${user.uid}`, {
         method: 'GET',
         headers: {
           'Content-Type': 'application/json',
-          'Authorization': `Bearer ${await user.getIdToken()}`
+          'Authorization': `Bearer ${token}`
         }
       });
       
@@ -91,6 +92,30 @@ function Notes() {
     }
   };
 
+  const deleteNote = async (noteId) => {
+    try {
+      const token = await user.getIdToken();
+
+      const response = await fetch(`${API_BASE_URL}/api/notes/${noteId}`, {
+        method: 'DELETE',
+        headers: {
+          'Content-Type': 'application/json',
+          Authorization: `Bearer ${token}`,
+        },
+      });
+
+      if (!response.ok) {
+        throw new Error('Failed to delete note');
+      }
+
+      // Remove the deleted note from the state
+      setSavedNotes((prevNotes) => prevNotes.filter((note) => note.id !== noteId));
+    } catch (err) {
+      setError('Error deleting note: ' + err.message);
+      console.error('Error deleting note:', err);
+    }
+  };
+
   return (
     <div className="notes-container">
       <h2>Encrypted Notes</h2>
@@ -132,6 +157,7 @@ function Notes() {
                 <p className="note-date">
                   {new Date(note.createdAt).toLocaleString()}
                 </p>
+                <button onClick={() => deleteNote(note.id)}>Delete</button>
               </div>
             ))}
           </div>

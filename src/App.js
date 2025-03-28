@@ -16,14 +16,14 @@ import Login from './components/Login';
 import Dashboard from './components/Dashboard';
 import './App.css';
 
-// Your Firebase configuration
+// Firebase configuration from environment variables
 const firebaseConfig = {
-  apiKey: "AIzaSyAvWtE3Dkius537AWExp-IlpYf8t1gPGlI",
-  authDomain: "notes-c0856.firebaseapp.com",
-  projectId: "notes-c0856",
-  storageBucket: "notes-c0856.appspot.com",
-  messagingSenderId: "425401204898",
-  appId: "YOUR_APP_ID"
+  apiKey: process.env.REACT_APP_FIREBASE_API_KEY,
+  authDomain: process.env.REACT_APP_FIREBASE_AUTH_DOMAIN,
+  projectId: process.env.REACT_APP_FIREBASE_PROJECT_ID,
+  storageBucket: process.env.REACT_APP_FIREBASE_STORAGE_BUCKET,
+  messagingSenderId: process.env.REACT_APP_FIREBASE_MESSAGING_SENDER_ID,
+  appId: process.env.REACT_APP_FIREBASE_APP_ID,
 };
 
 // Initialize Firebase

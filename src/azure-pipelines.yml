@@ -24,3 +24,17 @@ steps:
     package: '$(System.DefaultWorkingDirectory)/build'
     runtimeStack: 'NODE|22-lts'
   displayName: 'Deploy to Azure App Service'
+
+- script: |
+    cd src/server
+    npm install
+    displayName: 'Install Backend Dependencies'
+
+- task: AzureWebApp@1
+  inputs:
+    azureSubscription: 'NotesService'
+    appType: 'webAppLinux'
+    appName: 'Notes-Backend' # Replace with your backend App Service name
+    package: '$(System.DefaultWorkingDirectory)/src/server'
+    runtimeStack: 'NODE|22-lts'
+  displayName: 'Deploy Backend to Azure App Service'
