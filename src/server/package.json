@@ -9,6 +9,9 @@
       "express": "^4.18.2",
       "cors": "^2.8.5",
       "dotenv": "^16.0.3",
-      "firebase-admin": "^13.2.0"
+      "firebase-admin": "^13.2.0",
+      "@azure/identity": "^4.8.0",
+      "@azure/keyvault-secrets": "^4.9.0",
+      "@azure/keyvault-certificates": "^4.9.0"
     }
   }
