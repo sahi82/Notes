@@ -51,6 +51,12 @@ steps:
     runtimeStack: 'NODE|22-lts'
   displayName: 'Deploy to Azure App Service'
 
+- script: |
+    export NODE_OPTIONS=--openssl-legacy-provider
+    npm install
+    npm run build
+  displayName: 'Install Backend Dependencies'
+
 - task: AzureWebApp@1
   inputs:
     azureSubscription: 'NotesService'
