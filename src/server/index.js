@@ -110,21 +110,21 @@ app.use('/api', notesRouter); */
       });
 
       // Middleware to redirect HTTP to HTTPS
-      app.use((req, res, next) => {
+      /* app.use((req, res, next) => {
         if (!req.secure) {
           // Redirect to HTTPS
           return res.redirect(`https://${req.headers.host}${req.url}`);
         }
         next();
-      });
+      }); */
 
       const cors = require('cors');
       app.use(cors());
 
       const notesRouter = require('./api/notes'); 
 
-      const HTTPS_PORT = process.env.PORT || 443; // HTTPS port (Azure will use the PORT environment variable)
-      const HTTP_PORT = 8080; // HTTP port for debugging or local use
+      // const HTTPS_PORT = process.env.PORT || 443; // HTTPS port (Azure will use the PORT environment variable)
+      const HTTP_PORT = process.env.PORT || 8080; // HTTP port for debugging or local use
 
       // Middleware
       app.use(express.json());
@@ -132,10 +132,10 @@ app.use('/api', notesRouter); */
       // Use the notes router
       app.use('/api', notesRouter);
 
-      const sslOptions = await getSSLCertificate();
+      /* const sslOptions = await getSSLCertificate();
       https.createServer(sslOptions, app).listen(HTTPS_PORT, () => {
         console.log(`Server is running on https://localhost:${HTTPS_PORT}`);
-      });
+      });*/
 
       // Start HTTP server for redirection
       http.createServer(app).listen(HTTP_PORT, () => {
