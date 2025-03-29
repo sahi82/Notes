@@ -1,4 +1,5 @@
 const express = require('express');
+const http = require('http');
 const https = require('https'); // Import the https module
 const admin = require('firebase-admin');
 const { DefaultAzureCredential } = require('@azure/identity');
@@ -108,12 +109,22 @@ app.use('/api', notesRouter); */
         databaseURL: "https://notes-c0856.firebaseio.com"
       });
 
+      // Middleware to redirect HTTP to HTTPS
+      app.use((req, res, next) => {
+        if (!req.secure) {
+          // Redirect to HTTPS
+          return res.redirect(`https://${req.headers.host}${req.url}`);
+        }
+        next();
+      });
+
       const cors = require('cors');
       app.use(cors());
 
       const notesRouter = require('./api/notes'); 
 
-      const PORT = process.env.PORT || 3001;
+      const HTTPS_PORT = process.env.PORT || 443; // HTTPS port (Azure will use the PORT environment variable)
+      const HTTP_PORT = 8080; // HTTP port for debugging or local use
 
       // Middleware
       app.use(express.json());
@@ -122,8 +133,13 @@ app.use('/api', notesRouter); */
       app.use('/api', notesRouter);
 
       const sslOptions = await getSSLCertificate();
-      https.createServer(sslOptions, app).listen(PORT, () => {
-        console.log(`Server is running on https://localhost:${PORT}`);
+      https.createServer(sslOptions, app).listen(HTTPS_PORT, () => {
+        console.log(`Server is running on https://localhost:${HTTPS_PORT}`);
+      });
+
+      // Start HTTP server for redirection
+      http.createServer(app).listen(HTTP_PORT, () => {
+        console.log(`HTTP Server is running on http://localhost:${HTTP_PORT}`);
       });
     } catch (error) {
       console.error('Failed to start HTTPS server:', error);
